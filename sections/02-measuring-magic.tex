@@ -1,0 +1,87 @@
+% Owner: Clara — Measuring magic (Dmin, Dmax, LR, sandwich)
+% (Edit only this file to avoid merge conflicts.)
+
+% =====================================================================
+\section{Measuring magic}
+% =====================================================================
+
+\begin{frame}{Three ways to measure the distance to STAB}
+  \centering
+  \begin{tikzpicture}[scale=0.82]
+    % --- Dmin
+    \begin{scope}
+      \minipoly
+      \fill[magic] (30:1.22) circle (2pt) node[above right,font=\scriptsize]{$\psi$};
+      \draw[magic,thick] (30:1.2)--(0:0.95);
+      \node[font=\small\bfseries] at (0,-1.7) {$\Dmin$: best overlap};
+    \end{scope}
+    % --- Dmax
+    \begin{scope}[xshift=5.3cm]
+      \minipoly
+      \fill[magic] (30:1.22) circle (2pt) node[above right,font=\scriptsize]{$\rho$};
+      \fill[black] (215:1.22) circle (2pt) node[below left,font=\scriptsize]{any $\sigma$};
+      \draw[dashed] (30:1.2)--(215:1.2);
+      \fill[good] ($(30:1.2)!0.27!(215:1.2)$) circle (2pt);
+      \node[font=\small\bfseries] at (0,-1.7) {$\Dmax$: any noise};
+    \end{scope}
+    % --- LR
+    \begin{scope}[xshift=10.6cm]
+      \minipoly
+      \fill[magic] (30:1.22) circle (2pt) node[above right,font=\scriptsize]{$\rho$};
+      \fill[stab!60!black] (180:0.95) circle (2.3pt) node[left,font=\scriptsize]{$\sigma\in$ STAB};
+      \draw[dashed] (30:1.2)--(180:0.95);
+      \fill[good] ($(30:1.2)!0.3!(180:0.95)$) circle (2pt);
+      \node[font=\small\bfseries] at (0,-1.7) {$\LR$: stabilizer noise};
+    \end{scope}
+  \end{tikzpicture}
+  \vspace{0.3em}
+
+  \small
+  \begin{tabular}{@{}l@{\quad}l@{}}
+    $\Dmin(\psi)=-\log\max_{\phi\in\STAB}|\braket{\psi|\phi}|^2$ & how well the \emph{best} stabilizer state imitates $\psi$\\[2pt]
+    $\Dmax(\rho)=\log(1+R_g)$, \ $\rho\in(1+R_g)\STAB-R_g\,\mathcal S$ & how much noise washes out the magic\\[2pt]
+    $\LR(\rho)=\log(1+R)$, \ \ $\rho\in(1+R)\STAB-R\,\STAB$ & same, but noise must itself be free
+  \end{tabular}
+  \note{Green dot: the mixture becomes free. Less noise needed = less magic. logs base 2.}
+\end{frame}
+
+\begin{frame}{The ``sandwich'': all good measures lie in between}
+  \centering
+  \begin{tikzpicture}[x=1.1cm]
+    \draw[thick,-{Stealth}] (0,0)--(11,0) node[right,font=\small]{magic};
+    \fill[stab] (2.5,0) circle (3pt) node[below=3pt,font=\small]{$\Dmin$};
+    \fill[stab] (5.2,0) circle (3pt) node[below=3pt,font=\small]{$\Dmax$};
+    \fill[stab] (8.3,0) circle (3pt) node[below=3pt,font=\small]{$\LR$};
+    \fill[good!25] (2.5,0.25) rectangle (8.3,0.75);
+    \node[font=\small,good!60!black] at (5.4,0.5) {every \emph{consistent} measure $f$ lives here};
+    \node[font=\scriptsize,align=center] at (2.5,-1.0) {least magic\\(optimistic)};
+    \node[font=\scriptsize,align=center] at (8.3,-1.0) {most magic\\(pessimistic)};
+  \end{tikzpicture}
+  \vspace{0.5em}
+  \begin{itemize}
+    \item Always $\Dmin\le\Dmax\le\LR$.
+    \item App.\ A: a measure that never forbids a transformation that is actually possible must satisfy $\Dmin\le f\le\LR$.
+    \item \textbf{Strategy of the paper:} bound the two ends $\Rightarrow$ every reasonable measure is bounded at once.
+  \end{itemize}
+  \intuition{if the floor and the ceiling are both $\approx n$, everything in the room is $\approx n$.}
+\end{frame}
+
+\begin{frame}{Are these measures new?}
+  \small
+  No --- they come from general resource theory. New is the \emph{sandwich} and their \emph{many-body} behaviour. They are tied to simulation costs:
+  \vspace{0.3em}
+  \begin{center}
+  \begin{tabular}{@{}lll@{}}
+    \toprule
+    Known quantity & Relation & Meaning\\
+    \midrule
+    Stabilizer fidelity $F(\psi)$ & $F=2^{-\Dmin}$ & best stabilizer approximation\\
+    Stabilizer extent $\xi(\psi)$ & $\xi=2^{\Dmax}$ (pure) & cost of stabilizer-rank simulators\\
+    Free robustness $R$ & $\LR=\log(1+R)$ & cost of quasi-probability simulators\\
+    Mana $M$ (odd $d$ only) & $M<\LR+1$ & Wigner negativity\\
+    \bottomrule
+  \end{tabular}
+  \end{center}
+  \vspace{0.3em}
+  Magic is special: all three are finite and different (coherence: $\LR=\infty$; entanglement: $\Dmax=\LR$).
+\end{frame}

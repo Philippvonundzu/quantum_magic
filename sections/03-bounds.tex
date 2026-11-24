@@ -1,0 +1,119 @@
+% Owner: Diallo — How magical can n qubits be? (Theorems 1-4)
+% (Edit only this file to avoid merge conflicts.)
+
+% =====================================================================
+\section{How magical can $n$ qubits be?}
+% =====================================================================
+
+\begin{frame}{Upper bounds: magic is at most $\approx n$}
+  \begin{columns}[T]
+    \column{0.5\textwidth}
+    \begin{block}{Theorem 1: \ $\Dmax(\rho)\le n$}\end{block}
+    \centering
+    \begin{tikzpicture}[scale=1.05]
+      \minipoly
+      \draw[good!70!black,line width=2.2pt] (90:0.95)--(270:0.95);
+      \fill[stab] (90:0.95) circle (2pt) node[above,font=\scriptsize]{$\ket{0\cdots0}$};
+      \fill[stab] (270:0.95) circle (2pt) node[below,font=\scriptsize]{$\ket{1\cdots1}$};
+      \node[good!70!black,font=\scriptsize,align=left,anchor=west] at (0.15,0.1) {diagonal\\(classical)\\states};
+    \end{tikzpicture}
+
+    \raggedright\small STAB contains every \emph{diagonal} state $\Rightarrow$ magic $\le$ coherence, whose maximum is $n$.
+    \column{0.47\textwidth}
+    \begin{block}{Theorem 2: \ $\LR(\rho)\le n+2^{-n-1}$}\end{block}
+    \centering
+    \begin{tikzpicture}[scale=0.85]
+      \draw[gray!60,fill=gray!6] (0,0) circle (1.25);
+      \foreach \a in {0,30,...,330}{\fill[stab] (\a:1.25) circle (2.2pt);}
+      \fill[magic] (15:1.25) circle (2.2pt);
+      \node[magic,font=\scriptsize,anchor=west] at (15:1.32) {any $\rho$};
+      \node[font=\scriptsize,align=center] at (0,0) {stabilizer states\\evenly spread\\(2-design)};
+    \end{tikzpicture}
+
+    \raggedright\small Stabilizer states contain complete sets of mutually unbiased bases $\Rightarrow$ they cover state space \emph{evenly}; every state is close to a cheap stabilizer mixture.
+  \end{columns}
+  \note{Thm 2 proof: LP duality + Pauli group splits into 2^n+1 stabilizer groups (backup slide). Contrast coherence where LR is infinite.}
+\end{frame}
+
+\begin{frame}{Haar-random states}
+  \begin{columns}[c]
+    \column{0.52\textwidth}
+    \begin{block}{Haar measure}
+      The unique distribution on $U(2^n)$ invariant under $U\mapsto VU$ and $U\mapsto UV$. Haar-random state $\ket\psi=U\ket{0}^{\otimes n}$: the ``uniform'' pure state, model for generic / chaotic dynamics.
+    \end{block}
+    \small For any fixed $\ket\phi$, $\alpha=|\braket{\phi|\psi}|^2$ has density
+    \[p(\alpha)=(2^n-1)(1-\alpha)^{2^n-2}\]
+    $\Rightarrow\ \Pr[\alpha\ge\beta]\le e^{-(2^n-1)\beta}$.
+    \column{0.45\textwidth}
+    \centering
+    \begin{tikzpicture}[x=4.6cm,y=0.42cm]
+      \draw[-{Stealth}] (0,0)--(1.05,0) node[right,font=\scriptsize]{$\alpha$};
+      \draw[-{Stealth}] (0,0)--(0,8.4) node[above,font=\scriptsize]{$p(\alpha)$};
+      \node[below,font=\scriptsize] at (1,0) {1}; \node[below,font=\scriptsize] at (0,0) {0};
+      \draw[stab!50,thick,domain=0:1,samples=60] plot (\x,{3*(1-\x)^2});
+      \draw[stab,thick,domain=0:1,samples=80] plot (\x,{7*(1-\x)^6});
+      \begin{scope}\clip (0,0) rectangle (1,8);
+      \draw[magic,thick,domain=0:1,samples=150] plot (\x,{15*(1-\x)^14});
+      \end{scope}
+      \node[stab!50,font=\scriptsize] at (0.5,1.6) {$n=2$};
+      \node[stab,font=\scriptsize] at (0.28,3.6) {$n=3$};
+      \node[magic,font=\scriptsize] at (0.2,6.6) {$n=4$};
+    \end{tikzpicture}
+
+    \small Overlap piles up at $\alpha\sim2^{-n}$.
+  \end{columns}
+  \vspace{0.3em}
+  \intuition{in high dimension, a random direction is almost orthogonal to any fixed direction (like Page's theorem for entanglement).}
+\end{frame}
+
+\begin{frame}{Theorem 3: typical states are almost maximally magical}
+  \begin{columns}[c]
+    \column{0.52\textwidth}
+    \begin{block}{Theorem 3}
+      Haar-random $\ket\psi$, $n\ge6$:
+      \[\Pr\big[\Dmin(\psi)<n-2\log n-0.63\big]<e^{-n^2}\]
+    \end{block}
+    \small\textbf{Counting argument:}
+    \begin{itemize}
+      \item Being close to \emph{one} stabilizer state: prob.\ $\sim e^{-2^n\epsilon}$ (doubly exponential).
+      \item Only $\sim2^{n^2/2}$ stabilizer states.
+      \item Union bound: $2^{n^2/2}\,e^{-2^n\epsilon}\to0$.
+    \end{itemize}
+    \textbf{Thm 4:} $\max_\rho\Dmin>n-2\log n+0.96$.
+    \column{0.45\textwidth}
+    \centering
+    \begin{tikzpicture}
+      \fill[gray!8] (0,0) circle (2);
+      \draw[gray!60] (0,0) circle (2);
+      \foreach \x/\y in {-1.3/0.6,-0.8/1.3,0.1/1.6,0.9/1.1,1.5/0.4,1.2/-0.6,0.5/-1.4,-0.4/-1.1,-1.2/-0.9,-1.6/-0.1,0.2/0.3,-0.5/0.4,0.7/-0.2,-0.1/-0.5,1.0/0.6,-0.9/-0.3}
+        {\fill[stab!25] (\x,\y) circle (0.13); \fill[stab] (\x,\y) circle (1.2pt);}
+      \fill[magic] (0.45,0.85) circle (2.4pt);
+      \node[magic,font=\scriptsize,anchor=south] at (0.45,0.9) {random $\psi$};
+      \node[font=\scriptsize,align=center] at (0,-2.45) {stabilizer states = tiny islands\\in a huge ocean of states};
+    \end{tikzpicture}
+  \end{columns}
+  \vspace{0.2em}
+  \intuition{the number of stabilizer states grows like $2^{n^2}$, but the state space grows like $e^{2^n}$; the islands cannot keep up.}
+\end{frame}
+
+\begin{frame}{Putting the bounds together}
+  \centering
+  \begin{tikzpicture}[x=1.15cm]
+    \draw[thick,-{Stealth}] (0,0) -- (11.2,0) node[right]{magic};
+    \foreach \x/\l in {0/0,10/$n$} {\draw (\x,0.12)--(\x,-0.12) node[below]{\l};}
+    \draw[stab,thick] (3.4,0.12)--(3.4,-0.12);
+    \node[stab,below,font=\small,align=center] at (3.4,-0.15) {$0.34n$\\best product state};
+    \fill[magic!35] (8.9,-0.08) rectangle (10,0.08);
+    \node[magic,above,font=\small,align=center] at (9.3,0.15) {Haar-typical:\\$\ge n-2\log n-O(1)$};
+    \draw[decorate,decoration={brace,amplitude=5pt}] (0,0.95) -- (10,0.95)
+      node[midway,above=5pt,font=\small]{$\Dmin\le f\le\LR\le n+2^{-n-1}$ for every consistent $f$};
+  \end{tikzpicture}
+  \vspace{0.6em}
+  \begin{itemize}
+    \item Max \emph{and} typical value of every consistent measure $\approx n$ --- magic is ``1 per qubit''.
+    \item \textbf{Golden currency states} exist ($\Dmin\approx\LR\approx n$): a universal ``coin'' for converting magic.
+    \item A Haar-like state needs $\Omega(n)$ $T$ gates (each gives $O(1)$ magic).
+    \item Magic-based classical simulators give \emph{no} gain on generic states.
+  \end{itemize}
+  \intuition{almost every state is as magical as it can be --- yet we cannot write down one explicitly.}
+\end{frame}

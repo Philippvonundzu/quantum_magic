@@ -1,0 +1,58 @@
+% Owner: shared — Conclusions & thank-you slide
+% (Edit only this file to avoid merge conflicts.)
+
+% =====================================================================
+\section{Conclusions}
+% =====================================================================
+
+\begin{frame}{The magic scale for $n$ qubits}
+  \centering
+  \begin{tikzpicture}[x=1.2cm]
+    \draw[thick,-{Stealth}] (0,0) -- (10.6,0) node[right,font=\small]{$\Dmin/n$};
+    \foreach \x/\l in {0/0,5/0.5,10/1} {\draw (\x,0.1)--(\x,-0.1) node[below,font=\scriptsize]{\l};}
+    \foreach \x/\c/\t in {2.8/stab/{disjoint CCZ\\(conj.\ SPT)},4.6/good!70!black/{Union Jack SPT\\(upper bd.)},9.3/magic/{Haar-typical\\$n-2\log n$}}{
+      \fill[\c] (\x,0) circle (2.5pt); \draw[\c] (\x,0)--(\x,0.5);
+      \node[\c,font=\scriptsize,align=center,anchor=south] at (\x,0.5) {\t};}
+    \foreach \x/\c/\t in {3.4/stab/{product\\golden state},5.6/good!70!black/{triangular SPT\\(upper bd.)},10/magic/{max\\$\approx n$}}{
+      \fill[\c] (\x,0) circle (2.5pt); \draw[\c] (\x,0)--(\x,-0.6);
+      \node[\c,font=\scriptsize,align=center,anchor=north] at (\x,-0.6) {\t};}
+    \fill[good!20] (2.5,1.9) rectangle (6.6,2.25);
+    \node[font=\scriptsize,good!60!black] at (4.55,2.07) {physical / useful states};
+    \fill[magic!20] (8.6,1.9) rectangle (10.2,2.25);
+    \node[font=\scriptsize,magic] at (9.4,2.07) {generic states};
+  \end{tikzpicture}
+  \vspace{0.4em}
+
+  \small Interesting physics and computation live in the \emph{middle}; generic states sit at the top, where they are useless.
+\end{frame}
+
+\begin{frame}{Conclusions}
+  \small
+  \begin{columns}[T]
+    \column{0.5\textwidth}
+    \begin{block}{Key insights}
+      \begin{itemize}
+        \item Magic = distance from the stabilizer polytope; all good measures lie between $\Dmin$ and $\LR$.
+        \item ``One unit of magic per qubit'': max and typical $\approx n$.
+        \item Hypergraph states: magic = how far a Boolean function is from quadratic.
+        \item Too much magic is useless: power needs structure.
+        \item SPT phases: extensive but medium magic.
+      \end{itemize}
+    \end{block}
+    \column{0.47\textwidth}
+    \begin{alertblock}{Challenges \& outlook}
+      \begin{itemize}
+        \item Computing magic: $2^{\Theta(n^2)}$ vertices --- need easier bounds.
+        \item Explicit nearly-maximal magic states?
+        \item Do random circuits ($O(n)$-designs) reach maximal magic?
+        \item Magic vs.\ entanglement: does one force the other?
+        \item Magic as a diagnostic of phases: MBQC universality, sign problem, topological order.
+      \end{itemize}
+    \end{alertblock}
+  \end{columns}
+\end{frame}
+
+\begin{frame}[standout]
+  Thank you!\\[0.6em]
+  \normalsize Questions?
+\end{frame}

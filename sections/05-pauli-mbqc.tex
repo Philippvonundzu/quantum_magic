@@ -1,0 +1,92 @@
+% Owner: Diallo — Magic and computational power (Pauli MBQC, Thm 5, Cor 6)
+% (Edit only this file to avoid merge conflicts.)
+
+% =====================================================================
+\section{Magic and computational power}
+% =====================================================================
+
+\begin{frame}{Pauli measurement-based quantum computation}
+  \centering
+  \begin{tikzpicture}[v/.style={circle,fill=magic!70,inner sep=2pt}]
+    % resource state
+    \foreach \i in {0,...,3} \foreach \j in {0,...,2} \node[v] (q\i\j) at (0.7*\i,0.7*\j) {};
+    \foreach \i in {0,...,3} \foreach \j in {0,1} {\pgfmathtruncatemacro\jj{\j+1}\draw (q\i\j)--(q\i\jj);}
+    \foreach \i in {0,1,2} \foreach \j in {0,...,2} {\pgfmathtruncatemacro\ii{\i+1}\draw (q\i\j)--(q\ii\j);}
+    \node[font=\small,align=center] at (1.05,-0.8) {resource state $\ket\Psi$\\\scriptsize prepared \emph{offline}: all the magic};
+    % measurements
+    \draw[-{Stealth},thick] (2.6,0.7)--(4.3,0.7) node[midway,above,font=\scriptsize]{$X,\ Z,\ X\!\otimes\!X,\dots$};
+    \node[draw,rounded corners,fill=stab!10,font=\small,align=center,minimum height=1.2cm] (cc) at (5.5,0.7) {Pauli\\measurements};
+    \draw[-{Stealth},thick] (6.7,0.7)--(8.4,0.7) node[midway,above,font=\scriptsize]{$y\in\{\pm1\}^k$};
+    \node[draw,rounded corners,fill=gray!10,font=\small,align=center,minimum height=1.2cm] (pc) at (9.6,0.7) {classical\\computer};
+    \draw[-{Stealth},thick] (pc.south) -- ++(0,-0.6) -| node[pos=0.25,below,font=\scriptsize]{adaptive choice of next measurement} (cc.south);
+    \node[font=\scriptsize,align=center] at (7.5,1.75) {online: only Clifford-type operations};
+  \end{tikzpicture}
+  \vspace{0.3em}
+  \begin{columns}[T]
+    \column{0.5\textwidth}
+    \small
+    \begin{itemize}
+      \item Standard MBQC (cluster state): resource is stabilizer, the magic is in the measurement bases.
+      \item \textbf{Pauli MBQC}: only Pauli measurements, so by Gottesman--Knill \emph{all} magic must come from $\ket\Psi$.
+    \end{itemize}
+    \column{0.47\textwidth}
+    \small
+    \textbf{BPP}: problems a classical randomised algorithm solves in poly time.\\
+    \textbf{NP}: solutions can be \emph{checked} in poly time.
+  \end{columns}
+\end{frame}
+
+\begin{frame}{Theorem 5: too much magic is useless}
+  \begin{alertblock}{Theorem 5}
+    Pauli MBQC with a resource state with $\Dmin(\Psi)\ge n-O(\log n)$ gives no superpolynomial speedup over $\BPP$ for problems in $\NP$.
+  \end{alertblock}
+  \begin{columns}[c]
+    \column{0.5\textwidth}
+    \centering
+    \begin{tikzpicture}[x=0.27cm,y=0.55cm]
+      \node[font=\scriptsize\bfseries] at (8,2.0) {medium magic: structured};
+      \foreach \i/\h/\c in {0/0.1/stab!60,1/0.05/stab!60,2/0.1/stab!60,3/0.08/stab!60,4/1.6/good,5/0.05/stab!60,6/0.1/stab!60,7/0.06/stab!60,8/0.08/stab!60,9/0.05/stab!60,10/1.3/good,11/0.1/stab!60,12/0.07/stab!60,13/0.05/stab!60,14/0.1/stab!60,15/0.06/stab!60}
+        {\fill[\c] (\i,0) rectangle (\i+0.8,\h);}
+      \draw (0,0)--(16,0);
+      \begin{scope}[yshift=-2.15cm]
+      \node[font=\scriptsize\bfseries] at (8,2.0) {high magic: nearly flat};
+      \foreach \i/\h/\c in {0/0.45/stab!60,1/0.57/stab!60,2/0.42/good,3/0.34/stab!60,4/0.51/stab!60,5/0.55/good,6/0.37/stab!60,7/0.37/stab!60,8/0.55/stab!60,9/0.50/good,10/0.34/stab!60,11/0.42/good,12/0.57/stab!60,13/0.45/stab!60,14/0.33/good,15/0.48/stab!60}
+        {\fill[\c] (\i,0) rectangle (\i+0.8,\h);}
+      \draw (0,0)--(16,0);
+      \node[font=\scriptsize] at (8,-0.35) {outcome strings $y$ \ (\textcolor{good!70!black}{green = valid solution})};
+      \end{scope}
+    \end{tikzpicture}
+    \column{0.47\textwidth}
+    \small
+    \begin{enumerate}
+      \item Pauli measurements project onto stabilizer codes.
+      \item High magic $\Rightarrow$ tiny overlap with all of them: $p(y)\le2^{\,n-k-\Dmin}$ --- outcomes nearly uniform.
+      \item To succeed w.p.\ $2/3$, \emph{many} strings must be solutions.
+      \item Classical: guess random strings, check with the NP verifier; $\#$tries $\lesssim2^{\,n-\Dmin}=\mathrm{poly}(n)$.
+    \end{enumerate}
+  \end{columns}
+  \vspace{0.2em}
+  \intuition{a too-magical state turns the quantum computer into an expensive coin flipper.}
+\end{frame}
+
+\begin{frame}{Corollary 6 \& the ``Goldilocks'' picture}
+  \begin{block}{Corollary 6}
+    The fraction of states (Haar measure) that give a nontrivial advantage in Pauli MBQC is \alert{exponentially small} in $n$. \ {\small(Theorem 3 + Theorem 5)}
+  \end{block}
+  \centering
+  \begin{tikzpicture}[x=1.1cm]
+    \shade[left color=stab!40,right color=magic!40] (0,0) rectangle (10,0.5);
+    \fill[good!55] (3.3,0) rectangle (6.7,0.5);
+    \draw[thick] (0,0) rectangle (10,0.5);
+    \node[font=\small] at (0,-0.3) {0}; \node[font=\small] at (10,-0.3) {$n$};
+    \node[font=\small,align=center] at (1.6,-0.8) {too little magic\\[-1pt]\scriptsize Gottesman--Knill $\to$ simulable};
+    \node[font=\small,align=center,good!70!black] at (5,-0.8) {useful regime\\[-1pt]\scriptsize medium magic + special structure};
+    \node[font=\small,align=center] at (8.4,-0.8) {too much magic\\[-1pt]\scriptsize outcomes $\approx$ random};
+    \node[font=\small] at (5,0.85) {$\Dmin(\Psi)$};
+    \draw[magic,-{Stealth},thick] (9.4,1.55)--(9.4,0.6);
+    \node[magic,font=\scriptsize,anchor=south] at (9.4,1.55) {almost all states};
+  \end{tikzpicture}
+  \vspace{0.4em}
+
+  \small Same story as entanglement (Gross--Flammia--Eisert): most states are \emph{too} resourceful to be useful.\\ Power is not the \emph{amount} of resource, it is its \emph{structure}.
+\end{frame}

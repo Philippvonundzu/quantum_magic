@@ -1,0 +1,104 @@
+% Shared preamble: theme, packages, colours, macros, TikZ helpers.
+% Coordinate with the group before changing this file.
+
+\usetheme[progressbar=frametitle,numbering=fraction]{metropolis}
+%\setbeameroption{show notes on second screen=right}
+
+\usepackage[utf8]{inputenc}
+\usepackage{amsmath,amssymb}
+\usepackage{braket}
+\usepackage{booktabs}
+\usepackage{tikz}
+\usetikzlibrary{arrows.meta,positioning,shapes.geometric,calc,decorations.pathreplacing,backgrounds,shadings}
+
+\definecolor{stab}{HTML}{2C7FB8}
+\definecolor{magic}{HTML}{D95F02}
+\definecolor{good}{HTML}{1B9E77}
+\definecolor{grayish}{HTML}{8C8C8C}
+\setbeamercolor{alerted text}{fg=magic}
+\setbeamercolor{block title}{bg=stab!15,fg=black}
+\setbeamercolor{block body}{bg=stab!5}
+\setbeamercolor{block title example}{bg=good!18,fg=black}
+\setbeamercolor{block body example}{bg=good!5}
+
+\newcommand{\STAB}{\mathrm{STAB}}
+\newcommand{\Dmin}{D_{\min}}
+\newcommand{\Dmax}{D_{\max}}
+\newcommand{\LR}{\mathrm{LR}}
+\newcommand{\Tr}{\operatorname{Tr}}
+\newcommand{\wt}{\operatorname{wt}}
+\newcommand{\BPP}{\mathsf{BPP}}
+\newcommand{\NP}{\mathsf{NP}}
+\newcommand{\Pgrp}{\mathcal{P}_n}
+\newcommand{\Cgrp}{\mathcal{C}_n}
+
+% small "intuition" box
+\newcommand{\intuition}[1]{%
+  \begin{tikzpicture}\node[fill=magic!10,draw=magic!60,rounded corners=3pt,inner sep=5pt,
+    text width=0.93\linewidth,font=\small]{\textbf{\textcolor{magic}{Intuition:}} #1};\end{tikzpicture}}
+
+% hexagon "polytope in state space" used in several sketches
+\newcommand{\minipoly}[1][1]{%
+  \draw[gray!60,fill=gray!6] (0,0) circle (1.25*#1);
+  \draw[stab,thick,fill=stab!18] (0:0.95*#1)--(60:0.95*#1)--(120:0.95*#1)--(180:0.95*#1)--(240:0.95*#1)--(300:0.95*#1)--cycle;
+  \foreach \a in {0,60,...,300} \fill[stab] (\a:0.95*#1) circle (1.6pt);}
+
+% quantum-circuit gate
+\tikzset{gate/.style={draw,fill=white,minimum size=5.5mm,inner sep=1pt,font=\scriptsize},
+         mgate/.style={gate,fill=magic!25,draw=magic},
+         wire/.style={thick,gray!70}}
+
+% the single-qubit stabilizer octahedron
+\newcommand{\stabfig}{%
+  % ---- single-qubit stabilizer octahedron inside the Bloch sphere ----
+  % orthographic view (azimuth 35deg, elevation 20deg), sphere radius 2
+  \coordinate (O)  at (0,0);
+  \coordinate (zp) at (0,1.879);     \coordinate (zm) at (0,-1.879);
+  \coordinate (xp) at (-1.147,-0.56); \coordinate (xm) at (1.147,0.56);
+  \coordinate (yp) at (1.638,-0.392); \coordinate (ym) at (-1.638,0.392);
+  % sphere
+  \shade[inner color=white,outer color=gray!28] (O) circle (2);
+  \draw[gray!70] (O) circle (2);
+  % equator: back half dashed, front half solid
+  \draw[gray!60,dashed,domain=125:305,samples=60,smooth]
+    plot ({2*(-0.574*cos(\x)+0.819*sin(\x))},{2*(-0.28*cos(\x)-0.196*sin(\x))});
+  \draw[gray!70,domain=-55:125,samples=60,smooth]
+    plot ({2*(-0.574*cos(\x)+0.819*sin(\x))},{2*(-0.28*cos(\x)-0.196*sin(\x))});
+  % hidden octahedron edges
+  \draw[stab!70,dashed] (xm)--(ym) (xm)--(zm) (ym)--(zm);
+  % front faces
+  \fill[stab!22,opacity=0.85] (zp)--(xp)--(yp)--cycle;
+  \fill[stab!14,opacity=0.85] (zm)--(xp)--(yp)--cycle;
+  \fill[stab!30,opacity=0.85] (zp)--(xp)--(ym)--cycle;
+  \fill[stab!30,opacity=0.85] (zp)--(yp)--(xm)--cycle;
+  % visible edges
+  \draw[stab,thick] (zp)--(xp)--(zm)  (zp)--(yp)--(zm) (xp)--(yp)
+                    (zp)--(ym)--(xp) (zp)--(xm)--(yp) (ym)--(zm) ;
+  % vertices = the 6 single-qubit stabilizer states
+  \foreach \p in {zp,zm,xp,xm,yp,ym} \fill[stab] (\p) circle (2.3pt);
+  \node[above=2pt,font=\small] at (zp) {$\ket{0}$};
+  \node[below=2pt,font=\small] at (zm) {$\ket{1}$};
+  \node[below left=0pt,font=\small] at (xp) {$\ket{+}$};
+  \node[above right=0pt,font=\small] at (xm) {$\ket{-}$};
+  \node[right=2pt,font=\small] at (yp) {$\ket{+i}$};
+  \node[left=2pt,font=\small] at (ym) {$\ket{-i}$};
+  % H gate: |0> -> |+>, vertex -> vertex (arc outside the sphere)
+  \draw[good!75!black,very thick,-{Stealth},domain=6:84,samples=40,smooth]
+    plot ({2.35*(-0.574*sin(\x))},{2.35*(0.9395*cos(\x)-0.28*sin(\x))});
+  \node[good!75!black,font=\scriptsize\bfseries,align=right,anchor=east] at (-1.75,1.45) {$H$ (Clifford)\\[-1pt]vertex$\to$vertex};
+  % T gate: |+> -> T|+>, leaves the polytope
+  \coordinate (Tst) at (0.347,-0.674);
+  \draw[magic,very thick,-{Stealth},domain=4:43,samples=30,smooth]
+    plot ({2*(-0.574*cos(\x)+0.819*sin(\x))},{2*(-0.28*cos(\x)-0.196*sin(\x))});
+  \fill[magic] (Tst) circle (2.6pt);
+  \node[magic,font=\small,anchor=north] at ($(Tst)+(0.15,-0.06)$) {$T\ket{+}$};
+  % distance from nearest edge of the polytope
+  \coordinate (Emid) at (0.246,-0.476);
+  \draw[magic,densely dotted,thick] (Tst)--(Emid);
+  % T-type magic state above the (+,+,+) face
+  \coordinate (F) at (0.164,0.309); \coordinate (M) at (0.284,0.535);
+  \fill[magic] (M) circle (2.3pt);
+  \draw[magic,densely dotted,thick] (F)--(M);
+  \node[magic,font=\scriptsize,anchor=south west] at ($(M)+(0.02,0.02)$) {$\ket{F}$};
+
+}

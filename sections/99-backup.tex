@@ -1,0 +1,23 @@
+% Owner: shared — Backup slides
+% (Edit only this file to avoid merge conflicts.)
+
+\appendix
+\begin{frame}{Backup: why $\Dmin\le f\le\LR$ (App.~A)}
+  \small
+  \begin{itemize}
+    \item If $\Dmin(\psi)\ge\LR(\phi)$, a resource non-generating map $\psi\to\phi$ exists:
+      \[\mathcal E(\omega)=\Tr(\psi\omega)\,\phi+\big(1-\Tr(\psi\omega)\big)\,\delta .\]
+    \item Consistency: whenever $\psi\to\phi$ is feasible, $f(\psi)\ge f_r(\phi)$ and $f_r(\psi)\ge f(\phi)$ for a reference measure $f_r$.
+    \item If $f<\Dmin$ or $f>\LR$ somewhere, one can build a feasible transformation that violates consistency.
+  \end{itemize}
+\end{frame}
+
+\begin{frame}{Backup: proof sketch of Theorem 2}
+  \small
+  \begin{itemize}
+    \item Dual LP: $1+R(\rho)=\max_A\Tr\rho A$ s.t.\ $|\Tr\phi A|\le1\ \forall\phi\in\STAB$.
+    \item Max over $\rho$ gives $\|A\|$. Expand $A=\sum_P\alpha_PP$: $\|A\|^2\le\Tr A^2=2^n\sum_P\alpha_P^2$.
+    \item Pauli group (mod phases) $=$ union of $2^n+1$ stabilizer groups meeting only at $I$ (MUBs).
+    \item Constraint on each group $\Rightarrow\sum_P\alpha_P^2\le2^n+1$ $\Rightarrow$ $1+R\le\sqrt{2^n(2^n+1)}$.
+  \end{itemize}
+\end{frame}
