@@ -1,22 +1,60 @@
 # Many-Body Quantum Magic — class presentation
 
-Beamer slides on Liu & Winter, *Many-body quantum magic* (arXiv:2010.13817).
+The presentation should be 20-25 mins long + 5 mins of questions. I will stop you if the presentation reaches the 35 mins mark. I decided to increase the presentation duration, as this will make it easier to fit all the content into the presentation. 
 
-## Who edits what
+The content of the presentation should be as follows:
 
-| File | Content | Owner |
-|---|---|---|
-| `sections/01-motivation.tex` | Roadmap, motivation & background | Philipp |
-| `sections/02-measuring-magic.tex` | Dmin, Dmax, LR, sandwich | Clara |
-| `sections/03-bounds.tex` | Theorems 1–4 | Diallo |
-| `sections/04-hypergraph-boolean.tex` | Hypergraph states & Boolean functions | Clara |
-| `sections/05-pauli-mbqc.tex` | Pauli MBQC, Theorem 5, Corollary 6 | Diallo |
-| `sections/06-spt-phases.tex` | Magic in SPT phases | Philipp |
-| `sections/07-conclusions.tex` | Conclusions | shared |
-| `sections/99-backup.tex` | Backup slides | shared |
-| `preamble.tex` | Theme, packages, colours, macros | ask first |
+1. **Introduction and Background**: Introduce the topic, key definitions, motivation, and main research question. 
+2. **Main Results:** Present and explain the paper’s main theorems and findings.
+3. **Proof Ideas:** Highlight the key proof techniques, and intuition.
+4. **Conclusions:** Discuss key insights, challenges, and potential future directions.
 
-Edit only your own file where possible, so changes never collide. Put images in `figures/`.
+Feel free to modify the structure of the presentation as you like. The presentation should be in form of slides. There will be a blackboard if you need.
+
+For proof ideas, focus on the high level intuition than math.  Emphasize the intuition and meaning behind the mathematics rather than the step-by-step algebraic derivation of equations. 
+
+You can assume that audience knows the content already discussed in the class. The main goal of the presentation is to demonstrate your understanding of the paper.
+
+
+## Structure
+
+1. Introduction: general outline, **Philipp**
+    Motivation: For quantum computation we still struggle to find actual quantum advantage
+	(-> Why does it matter in many body appl.?)
+		Where do we find an advantage? entanglement,..
+		-> BUT: simple operations well simulatable
+		Question: How can we quantify the advantage of the quantum?
+2. Introduction II - maths: 
+	**Philipp**
+   - What is the magic? Qualitative, Intuition
+	   - Previous work, odd primes and so on
+   - Def clifford group 
+   - Gottesman-Knill theorem: -> beyond clifford
+   - Introduce the definitons of the metrics of magic and intuition (**Clara**)
+   - Introduce the magic measure f, equation 1
+	Question: Are the metrics new?
+
+1. Main Results: 
+	Bounds: **Diallo**
+	- Theorem 1: 
+	- Go through theorems and give intuition of the proof ideas, leave out 2 if not directly relevant later
+	- Theorem 3 &4: establish bounds
+	- Round up conclusion page 6
+	Hypergraph to Boolean: (**Clara**)
+	- Define
+	- Explain properties in connection to magic
+	- Connection to Boolean functions
+	MBQC: Application to QC (**Diallo**)
+	- Connect magic to comp. advantage (BPP and NP)
+	- Theorem 5: clearly important pls introduce haar measure
+	- Corollary 6: only intuition
+	Quantum Phase of Matter: (**Philipp**)
+	- whatever 
+Conclusion: 
+sum up
+
+
+Intuition: Think about how close classical capabilities are to properties of mixed/pure states
 
 ## Getting the PDF
 
@@ -34,5 +72,3 @@ cd many-body-magic-slides
 latexmk -pdf main.tex        # needs a TeX distribution (MacTeX / TeX Live / MiKTeX)
 ```
 Before starting work: `git pull`. When done: `git add -A && git commit -m "..." && git push`.
-
-**With Overleaf (each person on their own free account):** Overleaf → New Project → Upload Project → upload a zip of this repo. Edit there, then download your section file and commit it here. (Direct Overleaf ↔ GitHub sync needs a paid Overleaf plan.)
